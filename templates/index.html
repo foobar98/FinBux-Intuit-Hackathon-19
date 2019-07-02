@@ -1,26 +1,443 @@
-<!-- index.html -->
-<head>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  </head>
-  <style>
-    body {
-      background-image: url("/background.png");
-      background-size: cover;
-    }
-  </style>
-  <body>
-    <button id='myButton' type="button">Click Me!</button>
-    <script>
-      $('#myButton').click(function() {
-          $.ajax({
-                type:'POST',
-                url: "{{ url_for('foo')}}",
-                dataType:"text",
-                success: function(response){
-                   console.log(response);
-                   alert(response);
-                }
-        });
-      });
-    </script>
-  </body>
+<html>
+    <head>
+        <style>
+            .top {
+              margin-top: 50px;
+            }
+            body {
+              background-image: url("https://i.ibb.co/zZHPdsD/Screenshot-2019-06-28-at-9-15-30-AM.png");
+              background-size: cover;
+            }
+            .slidecontainer {
+              width: 100%;
+            }
+            .sliders {
+              float: left;
+              width: 100%;
+            }
+            #piechart {
+              float: left;
+              width: 50%;
+              height: 385px;
+              margin-top: 80px;
+            }
+            #train {
+              margin-top: 80px;
+              margin-bottom: 50px;
+              margin-left: 150px;
+            }
+            .healthButton {
+              margin-left: 60px;
+              margin-top: -30px;
+            }
+            .second {
+              width: 40%;
+            }
+            .rows {
+              margin-bottom: 20px;
+            }
+        </style>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    </head>
+    <body>
+        <div class="container top">
+        <table>
+            <tr>
+                <td class="first">
+                    <div class="sliders">
+                        <button id='train' type="button">Train Model</button>
+                        <div class="rows">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <div class="slidecontainer">
+                                            <input type="range" min="1" max="100" value="50" class="slider" id="f26range">
+                                            <p>Net Profit/Liabilities: <span id="f26span"></span></p>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button class="healthButton" id='f26' type="button">Compute Health!</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="rows">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <div class="slidecontainer">
+                                            <input type="range" min="1" max="100" value="50" class="slider" id="f33range">
+                                            <p>Expenses/Liabilities: <span id="f33span"></span></p>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button class="healthButton" id='f33' type="button">Compute Health!</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="rows">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <div class="slidecontainer">
+                                            <input type="range" min="1" max="100" value="50" class="slider" id="f45range">
+                                            <p>Net Profit/Total Assets: <span id="f45span"></span></p>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button class="healthButton" id='f45' type="button">Compute Health!</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="rows">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <div class="slidecontainer">
+                                            <input type="range" min="1" max="100" value="50" class="slider" id="f4range">
+                                            <p>Assets/Liabilities: <span id="f4span"></span></p>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button class="healthButton" id='f4' type="button">Compute Health!</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="rows">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <div class="slidecontainer">
+                                            <input type="range" min="1" max="100" value="50" class="slider" id="f10range">
+                                            <p>Equity/Total Assets: <span id="f10span"></span></p>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button class="healthButton" id='f10' type="button">Compute Health!</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                </td>
+                <td class="second">
+                <div id="piechart"></div>
+                </td>
+            </tr>
+        </table>
+        <script>
+            var slider1 = document.getElementById("f26range");
+            var output1 = document.getElementById("f26span");
+            
+            output1.innerHTML = slider1.value; // Display the default slider value
+            
+            // Update the current slider value (each time you drag the slider handle)
+            slider1.oninput = function() {
+              output1.innerHTML = this.value;
+            } 
+        </script>
+        <script>
+            var slider2 = document.getElementById("f33range");
+            var output2 = document.getElementById("f33span");
+            
+            output2.innerHTML = slider2.value; // Display the default slider value
+            
+            // Update the current slider value (each time you drag the slider handle)
+            slider2.oninput = function() {
+              output2.innerHTML = this.value;
+            } 
+        </script>
+        <script>
+            var slider3 = document.getElementById("f45range");
+            var output3 = document.getElementById("f45span");
+            
+            output3.innerHTML = slider3.value; // Display the default slider value
+            
+            // Update the current slider value (each time you drag the slider handle)
+            slider3.oninput = function() {
+              output3.innerHTML = this.value;
+            } 
+        </script>
+        <script>
+            var slider4 = document.getElementById("f4range");
+            var output4 = document.getElementById("f4span");
+            
+            output4.innerHTML = slider4.value; // Display the default slider value
+            
+            // Update the current slider value (each time you drag the slider handle)
+            slider4.oninput = function() {
+              output4.innerHTML = this.value;
+            } 
+        </script>
+        <script>
+            var slider5 = document.getElementById("f10range");
+            var output5 = document.getElementById("f10span");
+            
+            output5.innerHTML = slider5.value; // Display the default slider value
+            
+            // Update the current slider value (each time you drag the slider handle)
+            slider5.oninput = function() {
+              output5.innerHTML = this.value;
+            } 
+        </script>
+        <script>
+            $('#train').click(function() {
+                  $.ajax({
+                        async: false,
+                        type:'POST', 
+                        url: "{{ url_for('bar')}}",                 
+                        success: function(response){
+                          a = Number(response.split("= ")[1]);
+                          console.log(a);
+                          // Load google charts
+                          google.charts.load('current', {'packages':['corechart']});
+                          google.charts.setOnLoadCallback(drawChart);
+                          // Draw the chart and set the chart values
+                          console.log(a)
+                          function drawChart() {
+            
+                              console.log(a)
+                              var data = google.visualization.arrayToDataTable([
+                                ['Task', 'Hours per Day'],
+                                ['Danger', 1-a],
+                                ['Success', a]
+                              ]);
+        
+                              var options = {
+                                width: 600,
+                                height: 400,
+                                title: 'Financial Health',
+                                colors: ['#ff6361', '#ffa600']
+                              };
+                              // Display the chart inside the <div> element with id="piechart"
+                              var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+                              chart.draw(data,options);
+                          }
+                        }
+                });
+              });    
+        </script>
+        <script>
+            $('#f26').click(function() {
+              var sliderVal = $("#f26span").text()
+                $.ajax({
+                  async: false,
+                      type:'POST', 
+                      url: "{{ url_for('but1')}}",
+                      data: {
+                        newVal: Number(sliderVal),
+                        attrId: 0
+                      },                    
+                      success: function(response){
+                        console.log(response)
+                        a = Number(response.split("= ")[1]);
+                        console.log(a);
+                        // Load google charts
+                        google.charts.load('current', {'packages':['corechart']});
+                        google.charts.setOnLoadCallback(drawChart);
+                        // Draw the chart and set the chart values
+                        console.log(a)
+                        function drawChart() {
+            
+                            console.log(a)
+                            var data = google.visualization.arrayToDataTable([
+                              ['Task', 'Hours per Day'],
+                              ['Danger', 1-a],
+                              ['Success', a]
+                            ]);
+            
+                            var options = {
+                              width: 600,
+                              height: 400,
+                              title: 'Financial Health',
+                              colors: ['#ff6361', '#ffa600']
+                            };
+                            // Display the chart inside the <div> element with id="piechart"
+                            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+                            chart.draw(data,options);
+                        }
+                      }
+              });
+            });
+        </script>
+        <script>
+            $('#f33').click(function() {
+              var sliderVal = $("#f33span").text()
+                      $.ajax({
+                        async: false,
+                      type:'POST', 
+                      url: "{{ url_for('but2')}}",
+                      data: {
+                        newVal: Number(sliderVal),
+                        attrId: 0
+                      },                    
+                      success: function(response){
+                        console.log(response)
+                        a = Number(response.split("= ")[1]);
+                        console.log(a);
+                        // Load google charts
+                        google.charts.load('current', {'packages':['corechart']});
+                        google.charts.setOnLoadCallback(drawChart);
+                        // Draw the chart and set the chart values
+                        console.log(a)
+                        function drawChart() {
+            
+                            console.log(a)
+                            var data = google.visualization.arrayToDataTable([
+                              ['Task', 'Hours per Day'],
+                              ['Danger', 1-a],
+                              ['Success', a]
+                            ]);
+            
+                            var options = {
+                              width: 600,
+                              height: 400,
+                              title: 'Financial Health',
+                              colors: ['#ff6361', '#ffa600']
+                            };
+                            // Display the chart inside the <div> element with id="piechart"
+                            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+                            chart.draw(data,options);
+                        }
+                      }
+              });
+            });
+        </script>
+        <script>
+            $('#f45').click(function() {
+              var sliderVal = $("#f45span").text()
+                $.ajax({
+                  async: false,
+                      type:'POST', 
+                      url: "{{ url_for('but3')}}",
+                      data: {
+                        newVal: Number(sliderVal),
+                        attrId: 0
+                      },                    
+                      success: function(response){
+                        console.log(response)
+                        a = Number(response.split("= ")[1]);
+                        console.log(a);
+                        // Load google charts
+                        google.charts.load('current', {'packages':['corechart']});
+                        google.charts.setOnLoadCallback(drawChart);
+                        // Draw the chart and set the chart values
+                        console.log(a)
+                        function drawChart() {
+            
+                            console.log(a)
+                            var data = google.visualization.arrayToDataTable([
+                              ['Task', 'Hours per Day'],
+                              ['Danger', 1-a],
+                              ['Success', a]
+                            ]);
+            
+                            var options = {
+                              width: 600,
+                              height: 400,
+                              title: 'Financial Health',
+                              colors: ['#ff6361', '#ffa600']
+                            };
+                            // Display the chart inside the <div> element with id="piechart"
+                            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+                            chart.draw(data,options);
+                        }
+                      }
+              });
+            });
+        </script>
+        <script>
+            $('#f4').click(function() {
+              var sliderVal = $("#f4span").text()
+                $.ajax({
+                  async: false,
+                      type:'POST', 
+                      url: "{{ url_for('but4')}}",
+                      data: {
+                        newVal: Number(sliderVal),
+                        attrId: 0
+                      },                    
+                      success: function(response){
+                        console.log(response)
+                        a = Number(response.split("= ")[1]);
+                        console.log(a);
+                        // Load google charts
+                        google.charts.load('current', {'packages':['corechart']});
+                        google.charts.setOnLoadCallback(drawChart);
+                        // Draw the chart and set the chart values
+                        console.log(a)
+                        function drawChart() {
+            
+                            console.log(a)
+                            var data = google.visualization.arrayToDataTable([
+                              ['Task', 'Hours per Day'],
+                              ['Danger', 1-a],
+                              ['Success', a]
+                            ]);
+            
+                            var options = {
+                              width: 600,
+                              height: 400,
+                              title: 'Financial Health',
+                              colors: ['#ff6361', '#ffa600']
+                            };
+                            // Display the chart inside the <div> element with id="piechart"
+                            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+                            chart.draw(data,options);
+                        }
+                      }
+              });
+            });
+        </script>
+        <script>
+            $('#f10').click(function() {
+              var sliderVal = $("#f10span").text()
+                $.ajax({
+                  async: false,
+                      type:'POST', 
+                      url: "{{ url_for('but5')}}",
+                      data: {
+                        newVal: Number(sliderVal),
+                        attrId: 0
+                      },                    
+                      success: function(response){
+                        console.log(response)
+                        a = Number(response.split("= ")[1]);
+                        console.log(a);
+                        // Load google charts
+                        google.charts.load('current', {'packages':['corechart']});
+                        google.charts.setOnLoadCallback(drawChart);
+                        // Draw the chart and set the chart values
+                        console.log(a)
+                        function drawChart() {
+            
+                            console.log(a)
+                            var data = google.visualization.arrayToDataTable([
+                              ['Task', 'Hours per Day'],
+                              ['Danger', 1-a],
+                              ['Success', a]
+                            ]);
+          
+                            var options = {
+                              width: 600,
+                              height: 400,
+                              title: 'Financial Health',
+                              colors: ['#ff6361', '#ffa600']
+                            };
+                            // Display the chart inside the <div> element with id="piechart"
+                            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+                            chart.draw(data,options);
+                        }
+                      }
+              });
+            });
+        </script>
+        </div>
+    </body>
+</html>
