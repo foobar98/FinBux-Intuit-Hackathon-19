@@ -1,0 +1,12 @@
+numpy
+pandas
+warnings
+scipy
+sklearn
+xgboost
+pickle
+collections
+seaborn
+matplotlib
+tabulate
+flask
